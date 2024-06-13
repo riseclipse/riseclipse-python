@@ -19,59 +19,21 @@
 
 from riseclipse_parser import RiseClipseParser
 import json
+import pandas as pd
+
 
 class RiseClipseOutput:
     """
-    A class used to parse and categorize messages from the Validator in order to use them in Python scripts.
-
-    ...
-
-    Methods
-    -------
-    get_errors():
-        Returns a list of parsed error messages.
-    get_warnings():
-        Returns a list of parsed warning and error messages.
-    get_notices():
-        Returns a list of parsed notice, warning and error messages.
-    get_infos():
-        Returns a list of parsed info, notice, warning and error messages.
-    get_only_warnings():
-        Returns a list of only parsed warning messages.
-    get_only_notices():
-        Returns a list of only parsed notice messages.
-    get_only_infos():
-        Returns a list of only parsed info messages.
-    get_all_messages():
-        Returns a list of all parsed messages.
-    get_messages_by_category(category):
-        Returns a list of messages, filtered by category.
-    def get_messages_by_specific_message(data):
-        Returns a list of messages, filtered by a specific part of message, named data.
-    get_messages_by_filename(filename):
-        Returns a list of messages, filtered by the file containing the error/warning/info.
-    def get_messages_with_filter(self, filtering_dict):
-        Returns a list of messages, filtered with a dictionnary containing informations on which we want to filter messages in the file containing the error/warning/notice/info.
-    to_csv(path):
-        Writes the parsed messages to a CSV file and returns the CSV as a string.
-    to_json(path):
-        Writes the parsed messages to a JSON file and returns the JSON as a dictionary.
-    to_dataframe():
-        Returns a pandas DataFrame of the parsed messages.
-    
-    See Also
-    --------
-    PyClipseParser : A class used to parse messages from the Validator in order to use them in Python scripts.
+    A class used to parse and categorize messages from the Validator in order to use them 
+    in Python scripts.
     """
 
-    def __init__(self, list_of_messages):
+    def __init__(self, list_of_messages: list[str]):
         """
-        Constructs all the necessary attributes for the PyClipseOutput object.
+        Constructs all the necessary attributes for the RiseClipseOutput object.
 
-        Parameters
-        ----------
-            list_of_messages : list
-                a list of messages to be parsed and categorized
+        Args:
+            list_of_messages: a list of messages to be parsed and categorized
         """
         self.errors = []
         self.warnings = []
@@ -82,20 +44,16 @@ class RiseClipseOutput:
         self.only_infos = []
         self.parsed_messages = RiseClipseParser(list_of_messages).parsed_messages
 
-    def get_errors(self):
+    def get_errors(self) -> list[dict]:
         """
-        Returns a list of parsed error messages (dictionaries), to see the exact format, see PyClipseParser.
+        Returns a list of parsed error messages (dictionaries). To see the exact format, 
+        see :py:class:`~riseclipse_parser.RiseClipseParser`.
 
-        If the list of errors is not empty, it returns the list. Otherwise, it parses the messages and appends any error messages to the list.
+        If the list of errors is not empty, it returns the list. Otherwise, it parses the 
+        messages and appends any error messages to the list.
 
-        Returns
-        -------
-        list
+        Returns:
             a list of parsed error messages
-        
-        See Also
-        --------
-        PyClipseParser.parse_message : Parses a single message into a dictionary with keys for 'message', 'category', 'line', 'data', 'filename', and 'severity'.
         """
         if len(self.errors) > 0:
             return self.errors
@@ -104,20 +62,16 @@ class RiseClipseOutput:
                 self.errors.append(message)
         return self.errors
 
-    def get_warnings(self):
+    def get_warnings(self) -> list[dict]:
         """
-        Returns a list of parsed warning and error messages (dictionaries), to see the exact format, see PyClipseParser
+        Returns a list of parsed warning and error messages (dictionaries). To see the exact 
+        format, see :py:class:`~riseclipse_parser.RiseClipseParser`.
 
-        If the list of warnings and errors is not empty, it returns the list. Otherwise, it parses the messages and appends any warning or error messages to the list.
+        If the list of warnings and errors is not empty, it returns the list. Otherwise, 
+        it parses the messages and appends any warning or error messages to the list.
 
-        Returns
-        -------
-        list
+        Returns:
             a list of parsed warning and error messages
-        
-        See Also
-        --------
-        PyClipseParser.parse_message : Parses a single message into a dictionary with keys for 'message', 'category', 'line', 'data', 'filename', and 'severity'.
         """
         if len(self.warnings) > 0:
             return self.warnings
@@ -126,20 +80,17 @@ class RiseClipseOutput:
                 self.warnings.append(message)
         return self.warnings
     
-    def get_notices(self):
+    def get_notices(self) -> list[dict]:
         """
-        Returns a list of parsed notice, warning and error messages (dictionaries), to see the exact format, see PyClipseParser
+        Returns a list of parsed notice, warning and error messages (dictionaries). 
+        To see the exact format, see :py:class:`~riseclipse_parser.RiseClipseParser`.
 
-        If the list of notices, warnings and errors is not empty, it returns the list. Otherwise, it parses the messages and appends any notice, warning and error messages to the list.
+        If the list of notices, warnings and errors is not empty, it returns the list. 
+        Otherwise, it parses the messages and appends any notice, warning and error messages 
+        to the list.
 
-        Returns
-        -------
-        list
+        Returns:
             a list of parsed notice, warning and error messages
-
-        See Also
-        --------
-        PyClipseParser.parse_message : Parses a single message into a dictionary with keys for 'message', 'category', 'line', 'data', 'filename', and 'severity'.
         """
         if len(self.notices) > 0:
             return self.notices
@@ -148,20 +99,17 @@ class RiseClipseOutput:
                 self.notices.append(message)
         return self.notices
 
-    def get_infos(self):
+    def get_infos(self) -> list[dict]:
         """
-        Returns a list of parsed info, notices, warnings and errors messages (dictionaries), to see the exact format, see PyClipseParser
+        Returns a list of parsed info, notices, warnings and errors messages (dictionaries). 
+        To see the exact format, see :py:class:`~riseclipse_parser.RiseClipseParser`.
 
-        If the list of infos, notices, warnings and errors is not empty, it returns the list. Otherwise, it parses the messages and appends any info, notice, warning and error messages to the list.
+        If the list of infos, notices, warnings and errors is not empty, it returns the 
+        list. Otherwise, it parses the messages and appends any info, notice, warning and 
+        error messages to the list.
 
-        Returns
-        -------
-        list
+        Returns:
             a list of parsed info, notice, warning and error messages
-
-        See Also
-        --------
-        PyClipseParser.parse_message : Parses a single message into a dictionary with keys for 'message', 'category', 'line', 'data', 'filename', and 'severity'.
         """
         if len(self.infos) > 0:
             return self.infos
@@ -170,20 +118,16 @@ class RiseClipseOutput:
                 self.infos.append(message)
         return self.infos
 
-    def get_only_warnings(self):
+    def get_only_warnings(self) -> list[dict]:
         """
-        Returns a list of parsed warning messages (dictionaries), to see the exact format, see PyClipseParser
+        Returns a list of parsed warning messages (dictionaries). To see the exact format, 
+        see :py:class:`~riseclipse_parser.RiseClipseParser`.
 
-        If the list of warnings is not empty, it returns the list. Otherwise, it parses the messages and appends any warning messages to the list.
+        If the list of warnings is not empty, it returns the list. Otherwise, it parses 
+        the messages and appends any warning messages to the list.
 
-        Returns
-        -------
-        list
+        Returns:
             a list of parsed warning messages
-        
-        See Also
-        --------
-        PyClipseParser.parse_message : Parses a single message into a dictionary with keys for 'message', 'category', 'line', 'data', 'filename', and 'severity'.
         """
         if len(self.only_warnings) > 0:
             return self.only_warnings
@@ -192,20 +136,16 @@ class RiseClipseOutput:
                 self.only_warnings.append(message)
         return self.only_warnings
     
-    def get_only_notices(self):
+    def get_only_notices(self) -> list[dict]:
         """
-        Returns a list of parsed notice messages (dictionaries), to see the exact format, see PyClipseParser
+        Returns a list of parsed notice messages (dictionaries). To see the exact format, 
+        see :py:class:`~riseclipse_parser.RiseClipseParser`.
 
-        If the list of notices is not empty, it returns the list. Otherwise, it parses the messages and appends any notice messages to the list.
+        If the list of notices is not empty, it returns the list. Otherwise, it parses the 
+        messages and appends any notice messages to the list.
 
-        Returns
-        -------
-        list
+        Returns:
             a list of parsed notice messages
-
-        See Also
-        --------
-        PyClipseParser.parse_message : Parses a single message into a dictionary with keys for 'message', 'category', 'line', 'data', 'filename', and 'severity'.
         """
         if len(self.notices) > 0:
             return self.only_notices
@@ -214,20 +154,16 @@ class RiseClipseOutput:
                 self.only_notices.append(message)
         return self.only_notices
 
-    def get_only_infos(self):
+    def get_only_infos(self) -> list[dict]:
         """
-        Returns a list of parsed info messages (dictionaries), to see the exact format, see PyClipseParser
+        Returns a list of parsed info messages (dictionaries). To see the exact format, 
+        see :py:class:`~riseclipse_parser.RiseClipseParser`.
 
-        If the list of infos is not empty, it returns the list. Otherwise, it parses the messages and appends any info messages to the list.
+        If the list of infos is not empty, it returns the list. Otherwise, it parses the 
+        messages and appends any info messages to the list.
 
-        Returns
-        -------
-        list
+        Returns:
             a list of parsed info messages
-
-        See Also
-        --------
-        PyClipseParser.parse_message : Parses a single message into a dictionary with keys for 'message', 'category', 'line', 'data', 'filename', and 'severity'.
         """
         if len(self.only_infos) > 0:
             return self.only_infos
@@ -236,34 +172,25 @@ class RiseClipseOutput:
                 self.only_infos.append(message)
         return self.only_infos
     
-    def get_all_messages(self):
+    def get_all_messages(self) -> list[dict]:
         """
-        Returns a list of all parsed messages (dictionaries), to see the exact format, see PyClipseParser.
+        Returns a list of all parsed messages (dictionaries). To see the exact format, 
+        see :py:class:`~riseclipse_parser.RiseClipseParser`.
 
-        Returns
-        -------
-        list
+        Returns:
             a list of all parsed messages
-        
-        See Also
-        --------
-        PyClipseParser.parse_message : Parses a single message into a dictionary with keys for 'message', 'category', 'line', 'data', 'filename', and 'severity'.
         """
         return self.parsed_messages
     
-    def get_messages_by_category(self, category):
+    def get_messages_by_category(self, category: str) -> list[dict]:
         """
         Returns a list of messages, filtered by category.
         The category does not have to be an exact match, it can be a substring of the category.
         
-        Parameters
-        ----------
-        category : str
-            the category to filter the messages by
+        Args:
+            category: The category to filter the messages by
         
-        Returns
-        -------
-        list
+        Returns:
             a list of parsed messages filtered by category
         """
         messages = []
@@ -272,20 +199,15 @@ class RiseClipseOutput:
                 messages.append(message)
         return messages
     
-    def get_messages_by_specific_message(self, data):
+    def get_messages_by_specific_message(self, data: str) -> list[dict]:
         """
         Returns a list of messages, filtered by a specific part of message, named data.
         The data does not have to be an exact match, it can be a substring of the message.
         
-        Parameters
-        ----------
-        data : str
-            the "data" e.g. specific message to filter the messages by
+        Args:
+            data: the "data" e.g. specific message to filter the messages by
         
-        Returns
-        -------
-        list
-            a list of parsed messages filtered by specific message
+        Returns:
         """
         messages = []
         for message in self.parsed_messages:
@@ -293,18 +215,14 @@ class RiseClipseOutput:
                 messages.append(message)
         return messages
     
-    def get_messages_by_filename(self, filename):
+    def get_messages_by_filename(self, filename: str) -> list[dict]:
         """
         Returns a list of messages, filtered by the file containing the error/warning/notice/info.
         
-        Parameters
-        ----------
-        filename : str
-            the filename to filter the messages by
+        Args:
+            filename: The filename to filter the messages by
         
-        Returns
-        -------
-        list
+        Returns:
             a list of parsed messages filtered by filename
         """
         messages = []
@@ -313,18 +231,15 @@ class RiseClipseOutput:
                 messages.append(message)
         return messages
     
-    def get_messages_by_line(self, line):
+    def get_messages_by_line(self, line) -> list[dict]:
         """
-        Returns a list of messages, filtered by the line number in the file containing the error/warning/notice/info.
+        Returns a list of messages, filtered by the line number in the file containing 
+        the error/warning/notice/info.
         
-        Parameters
-        ----------
-        line : int
-            the line number to filter the messages by
+        Args:
+            line: the line number to filter the messages by
         
-        Returns
-        ----------
-        list
+        Returns:
             a list of parsed messages filtered by line number
         """
         messages = []
@@ -333,18 +248,15 @@ class RiseClipseOutput:
                 messages.append(message)
         return messages
     
-    def get_messages_with_filter(self, filtering_dict):
+    def get_messages_with_filter(self, filtering_dict: dict) -> list[dict]:
         """
-        Returns a list of messages, filtered with a dictionnary containing informations on which we want to filter messages in the file containing the error/warning/notice/info.
+        Returns a list of messages, filtered with a dictionnary containing informations on 
+        which we want to filter messages in the file containing the error/warning/notice/info.
         
-        Parameters
-        ----------
-        filtering_dict : dict
-            the filter itself, fields of the dictionary are the the same as a parsed message
+        Args:
+            filtering_dict: the filter itself, fields of the dictionary are the the same as a parsed message
         
-        Returns
-        ----------
-        list
+        Returns:
             a list of parsed messages filtered according to the filter
         """
         messages = []
@@ -362,20 +274,15 @@ class RiseClipseOutput:
                 messages.append(message)
         return messages
     
-    def to_csv(self, path, separator=","):
+    def to_csv(self, path: str, separator: str =",") -> str:
         """
         Writes the parsed messages to a CSV file and returns the CSV as a string.
         
-        Parameters
-        ----------
-        path : str
-            the path to write the CSV file to
-        separator : str
-            the separator to use in the csv file
+        Args:
+            path: The path to write the CSV file to
+            separator: The separator to use in the csv file
         
-        Returns
-        -------
-        str
+        Returns:
             a string of the CSV file
         """
         if len(self.parsed_messages) == 0:
@@ -397,18 +304,14 @@ class RiseClipseOutput:
             f.write(csv)
         return csv
     
-    def to_json(self,path):
+    def to_json(self,path: str)-> dict:
         """
         Writes the parsed messages to a JSON file and returns the JSON as a dictionary.
         
-        Parameters
-        ----------
-        path : str
-            the path to write the JSON file to
+        Args:
+            path: The path to write the JSON file to
         
-        Returns
-        -------
-        dict
+        Returns:
             a dictionary of the JSON file
         """
         json_dump = {}
@@ -418,13 +321,11 @@ class RiseClipseOutput:
             json.dump(json_dump, f)
         return json_dump
     
-    def to_dataframe(self):
+    def to_dataframe(self) -> pd.DataFrame:
         """
         Returns a pandas DataFrame of the parsed messages.
         
-        Returns
-        -------
-        DataFrame
+        Returns:
             a pandas DataFrame of the parsed messages
         """
         import pandas as pd

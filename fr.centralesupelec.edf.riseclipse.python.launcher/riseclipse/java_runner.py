@@ -23,90 +23,69 @@ from shutil import which
 
 class JavaRunner(ABC):
     """
-    Abstract class that carry out the execution of a .jar file.
+    Abstract class that carry out the execution of a ``jar`` file.
     
-    Attributes
-    ----------
-    java_command : str
-        The path to the java command used to execute the jar file.
-    jar_file : str
-        The path to the jar file that will be executed.
-    result_code : None or int
-        The result code after execution of the jar file.
+    Attributes:
+        java_command (str): The path to the ``java`` command used to execute the jar file.
+        jar_file (str): The path to the ``jar`` file that will be executed.
+        result_code (None or int): The result code after execution of the ``jar`` file.
     """
         
     def __init__(self, jar_path: str):
         """
         Initialize the JavaRunner object.
-        The java command that will be used is initialized with shutil.which().
         
-        Parameters
-        ----------
-        jar_path : str
-            The path to the jar file.
+        The ``java`` command that will be used is initialized with ``shutil.which()``
+        
+        Args:
+            jar_path: The path to the ``jar`` file.
+
         """
         self.jar_file = jar_path
         self.java_command = which("java")
         self.result_code = None
     
-    def set_jar_file(self, jar_path: str):
+    def set_jar_file(self, jar_path: str) -> None:
         """
-        Change the jar file that will be executed.
+        Change the ``jar`` file that will be executed.
 
-        Parameters
-        ----------
-        jar_path : str
-            The path to the jar file.
-
-        Returns
-        -------
-        None
+        Args:
+            jar_path: The path to the ``jar`` file.
         """
         self.jar_file = jar_path
     
-    def set_java_command(self, command: str):
+    def set_java_command(self, command: str) -> None:
         """
-        TChange the java command that will be used to execute the jar file.
+        Change the ``java`` command that will be used to execute the ``jar`` file.
 
-        Parameters
-        ----------
-        command : str
-            The path to the java command.
-
-        Returns
-        -------
-        None
+        Args:
+            command: The path to the ``java`` command.
         """
         self.java_command = command
     
-    def get_result_code(self):
+    def get_result_code(self) -> int:
         """
-        Returns the result code after execution of the jar file.
+        Returns the result code after execution of the ``jar`` file.
         Before execution, None is returned.
         
-        Returns
-        -------
-        int or None
+        Returns:
             The result code or None.
         """
         return self.result_code
     
-    def run(self, arguments: list[str]) -> int:
+    def run(self, arguments: list[str]) -> str:
         """
-        Executes the jar file using the given arguments.
+        Executes the ``jar`` file using the current ``java`` command and the given arguments.
         
-        Parameters
-        ----------
-        arguments : list[str]
-            The arguments that are added to the command line.
+        Args:
+            arguments: The arguments that are added to the command line.
 
-        Returns
-        -------
-        str
-            The text displayed on stdout while the jar executes.
+        Returns:
+            The text displayed on stdout while the ``jar`` executes.
         """
         command = [self.java_command, '-jar', self.jar_file] + [a for a in arguments]
         result = run(command, capture_output=True, text=True)
         self.result_code = result.returncode
 
         return result.stdout
+

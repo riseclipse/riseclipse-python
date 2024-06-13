@@ -25,30 +25,20 @@ class RiseClipseValidator(JavaRunner) :
     """
     Base class for RiseClipse validators. It takes care of common options.
     
-    Attributes
-    ----------
-    options : list[str]
-        The set of options that will be added when the validation is launched.
-    level: str
-        The level of displayed messages.
-        Initialized to "warning".
-    format_string: str
-        The format string used by the java.util.Formatter/
-    use_color: bool
-        Whether colors are used when result is displayed on stdout.
-        Initialized to False.
-    files: list[str]
-        The files that will be given to the validator.
+    Attributes:
+        options (list[str]): The set of options that will be added when the validation is launched.
+        level (str): The level of displayed messages, initialized to ``"warning"``.
+        format_string (str): The format string used by the ``java.util.Formatter``.
+        use_color (bool): Whether colors are used when result is displayed on stdout, initialized to ``False``.
+        files (list[str]): The files that will be given to the validator.
     """
 
     def __init__(self, jarPath: str):
         """
         Initialize the RiseClipseValidator object.
         
-        Parameters
-        ----------
-        jar_path : str
-            the path to the validator jar file
+        Args:
+            jar_path: The path to the validator ``jar`` file
         """
         super().__init__(jarPath)
         # 
@@ -64,12 +54,8 @@ class RiseClipseValidator(JavaRunner) :
 
     def get_output_level(self) -> str:
         """
-        Returns the current output level: "debug", "info", "notice", "warning" or "error".
-        
-        Returns
-        -------
-        str
-            The current output level.
+        Returns:
+            the current output level, one of ``"debug"``, ``"info"``, ``"notice"``, ``"warning"`` or ``"error"``.
         """
         return self.level
     
@@ -77,15 +63,9 @@ class RiseClipseValidator(JavaRunner) :
         """
         Set the current output level.
         
-        Parameters
-        -------
-        new_level : str
-            The new output level.
-            Must be "debug", "info", "notice", "warning" or "error".
-
-        Returns
-        -------
-        None
+        Args:
+            new_level: The new output level.
+                Must be ``"debug"``, ``"info"``, ``"notice"``, ``"warning"`` or ``"error"``.
         """
         match level:
             case "debug" | "info" | "notice" | "warning" | "error":
@@ -95,9 +75,7 @@ class RiseClipseValidator(JavaRunner) :
         """
         Returns the current format string used for output.
         
-        Returns
-        -------
-        str
+        Returns:
             The current format string.
         """
         return self.format_string
@@ -106,15 +84,8 @@ class RiseClipseValidator(JavaRunner) :
         """
         Set the current format string used for output.
         
-        Parameters
-        -------
-        format : str
-            The new format string.
-            Its validity is not checked.
-
-        Returns
-        -------
-        None
+        Args:
+            format: The new format string, its validity is not checked.
         """
         # not checked
         self.format_string = format
@@ -123,9 +94,7 @@ class RiseClipseValidator(JavaRunner) :
         """
         Returns whether color is used.
         
-        Returns
-        -------
-        bool
+        Returns:
             True if color will be used, False Otherwise.
         """
         return self.use_color
@@ -134,14 +103,8 @@ class RiseClipseValidator(JavaRunner) :
         """
         Set whether color will be used for output.
         
-        Parameters
-        -------
-        use : bool
-            If True, color will be used.
-
-        Returns
-        -------
-        None
+        Args:
+            use: If True, color will be used.
         """
         self.use_color = use
     
@@ -151,9 +114,7 @@ class RiseClipseValidator(JavaRunner) :
         """
         Returns whether the copyright is displayed.
         
-        Returns
-        -------
-        bool
+        Returns:
             True if the copyright is displayed, False Otherwise.
         """
         return self.DO_NOT_DISPLAY_COPYRIGHT_OPTION not in self.options
@@ -162,14 +123,8 @@ class RiseClipseValidator(JavaRunner) :
         """
         Set whether the copyright is displayed.
         
-        Parameters
-        -------
-        display : bool
-            If True, copyright will be displayed.
-
-        Returns
-        -------
-        None
+        Args:
+            display: If True, copyright will be displayed.
         """
         if display:
             self.options.remove(self.DO_NOT_DISPLAY_COPYRIGHT_OPTION)
@@ -180,31 +135,21 @@ class RiseClipseValidator(JavaRunner) :
         """
         Add a file to be processed by the validator.
         
-        Parameters
-        -------
-        file : str
-            The path to the file or directory to be processed.
-
-        Returns
-        -------
-        None
+        Args:
+            file: The path to the file or directory to be processed.
         """
         self.files.append(file)
     
-    def add_option(self, opt: str, value: str=None) -> None:
+    def _add_option(self, opt: str, value: str=None) -> None:
         """
         Add an option to the command line. An associated value may be specified.
         
-        Parameters
-        -------
-        opt : str
-            The option to be added.
-        value : str
-            The value to be added after the option.
-
-        Returns
-        -------
-        None
+        Note:
+            This method is intended to be used by subclasses
+                
+        Args:
+            opt: The option to be added.
+            value: The value to be added after the option.
         """
         if opt in self.options:
             if value != None:
@@ -214,20 +159,16 @@ class RiseClipseValidator(JavaRunner) :
             if value != None:
                 self.options.append(value)
 
-    def remove_option(self, opt:str, has_value=False) -> None:
+    def _remove_option(self, opt:str, has_value=False) -> None:
         """
         Remove an option from the command line.
         
-        Parameters
-        -------
-        opt : str
-            The option to be removed.
-        has_value : bool
-            Whether there was also an associated value.
-
-        Returns
-        -------
-        None
+        Note:
+            This method is intended to be used by subclasses
+                
+        Args:
+            opt: The option to be removed.
+            has_value: Whether there was also an associated value.
         """
         if opt in self.options:
             pos = self.options.index(opt)
@@ -235,22 +176,19 @@ class RiseClipseValidator(JavaRunner) :
             if has_value:
                 self.options.pop(pos)
     
-    def compute_arguments(self, display_copyright: bool=True, use_format: bool=True, set_color: bool=False) -> list[str]:
+    def _compute_arguments(self, display_copyright: bool=True, use_format: bool=True, set_color: bool=False) -> list[str]:
         """
         Returns the arguments that will be passed to the run() method.
         
-        Parameters
-        -------
-        display_copyright : bool
-            Whether the display_copyright setting must be taken into account. Default is True.
-        use_format : bool
-            Whether the format_string setting must be taken into account. Default is True.
-        set_color : bool
-            Whether the use_color setting must be taken into account. Default is False.
+        Note:
+            This method is intended to be internal
+                
+        Args:
+            display_copyright: Whether the display_copyright setting must be taken into account. Default is True.
+            use_format: Whether the format_string setting must be taken into account. Default is True.
+            set_color: Whether the use_color setting must be taken into account. Default is False.
 
-        Returns
-        -------
-        list[str]
+        Returns:
             The list of strings that will be passed to the run() method.
         """
         arguments = ['--' + self.level]
@@ -271,40 +209,32 @@ class RiseClipseValidator(JavaRunner) :
     
     
          
-    def validate(self):
+    def validate(self) -> RiseClipseOutput:
         """
         Runs the validator with the current set of arguments and files.
         
-        Returns
-        -------
-        RiseClipseOutput
+        Returns:
             An object representing the result of validation.
         """
-        arguments = self.compute_arguments(display_copyright=False, use_format=False)
+        arguments = self._compute_arguments(display_copyright=False, use_format=False)
         return RiseClipseOutput(self.run(arguments).split('\n'))
     
-    def validate_to_str(self):
+    def validate_to_str(self) -> str:
         """
         Runs the validator with the current set of arguments and files.
         
-        Returns
-        -------
-        str
+        Returns:
             The result of validation as a string.
         """
-        arguments = self.compute_arguments()
+        arguments = self._compute_arguments()
         return self.run(arguments)
     
-    def validate_to_stdout(self):
+    def validate_to_stdout(self) -> None:
         """
         Runs the validator with the current set of arguments and files.
         Display the result on stdout.
-        
-        Returns
-        -------
-        None
         """
-        arguments = self.compute_arguments(set_color=True)
+        arguments = self._compute_arguments(set_color=True)
         print(self.run(arguments))
 
     def validate_to_txt(self, outputFile: str="riseclipse_output.txt") -> None:
@@ -312,28 +242,20 @@ class RiseClipseValidator(JavaRunner) :
         Runs the validator with the current set of arguments and files.
         Save the result in the given file.
         
-        Parameters
-        -------
-        outputFile : str
-            The path to the file where the result will be saved.
-        
-        Returns
-        -------
-        None
+        Args:
+            outputFile: The path to the file where the result will be saved.
         """
-        arguments = self.compute_arguments()
+        arguments = self._compute_arguments()
         result = self.run(arguments)
         output_file = open(outputFile, "w")
         output_file.write(result)
         output_file.close()
 
-    def get_current_version(self):
+    def get_current_version(self) -> list[int]:
         """
-        Returns the current version of the jar validator used by the RiseClipseValidator object.
+        Returns the current version of the ``jar`` file used by this object.
         
-        Returns
-        -------
-        list[int]
+        Returns:
             A list of three integers giving the current version.
         """
         copyright = self.run(["--help"]).split('\n')[16]
