@@ -10,4 +10,3 @@ riseclipse
    riseclipse_parser
    riseclipse_validator
    riseclipse_validator_scl
-   test_riseclipse
