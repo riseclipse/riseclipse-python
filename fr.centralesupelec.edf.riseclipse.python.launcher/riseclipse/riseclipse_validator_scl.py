@@ -28,41 +28,98 @@ RISECLIPSE_VALIDATOR_SCL_JAR = "RiseClipseValidatorSCL.jar"
 
 
 class RiseClipseValidatorSCL(RiseClipseValidator) :
+    """
+    This class is a launcher for the ``RiseClipseValidatorSCL.jar`` tool.
+    
+    It offers specific options for this validator.
+        
+    Note:
+        The script ``riseclipse_validator_scl.py`` can also be executed directly, it allows to donwload or update the
+        validator ``jar`` file needed for this API.
+    """
 
     def __init__(self):
+        """
+        Initialize the RiseClipseValidatorSCL object.
+
+        In the initial state, one can considered that the following methods have been called:
+            * :py:meth:`set_output_level("warning") <riseclipse_validator.RiseClipseValidator.set_output_level>`
+            * :py:meth:`set_output_format('%6$s%1$-7s%7$s: [%2$s] %4$s (%5$s:%3$d)') <riseclipse_validator.RiseClipseValidator.set_output_format>`
+            * :py:meth:`set_use_color(False) <riseclipse_validator.RiseClipseValidator.set_use_color>`
+            * :py:meth:`set_display_copyright(True) <riseclipse_validator.RiseClipseValidator.set_display_copyright>`
+            * :py:meth:`set_make_explicit_links`
+            * :py:meth:`unset_xml_schema`
+            * :py:meth:`unset_display_nsd_messages`
+            * :py:meth:`unset_use_different_exit_codes`
+            * :py:meth:`unset_use_filenames_starting_with_dot`
+        
+        """
         super().__init__(RISECLIPSE_VALIDATOR_SCL_JAR)
         # by default, explicit links are created
-        self.add_option("--make-explicit-links")
+        self._add_option("--make-explicit-links")
 
     def set_make_explicit_links(self):
-        self.add_option("--make-explicit-links")
+        """
+        Build explicit links before doing validation.
+        """
+        self._add_option("--make-explicit-links")
 
     def unset_make_explicit_links(self):
-        self.remove_option("--make-explicit-links")
+        """
+        Don't build explicit links before doing validation.
+        """
+        self.__remove_option("--make-explicit-links")
 
-    def set_xml_schema(self, schema_path):
-        self.add_option("--xml-schema", schema_path)
+    def set_xml_schema(self, schema_path: str):
+        """
+        Do an XMLSchema validation.
+        
+        Args:
+            schema_path: The path to the XML Schema file
+        """
+        self._add_option("--xml-schema", schema_path)
 
     def unset_xml_schema(self):
-        self.remove_option("--xml-schema", True)
+        """
+        Don't do an XMLSchema validation.
+        """
+        self._remove_option("--xml-schema", True)
 
     def set_display_nsd_messages(self):
-        self.add_option("--display-nsd-messages")
+        """
+        Display messages concerning the loading of NSD files.
+        """
+        self._add_option("--display-nsd-messages")
 
     def unset_display_nsd_messages(self):
-        self.remove_option("--display-nsd-messages")
+        """
+        Don't display messages concerning the loading of NSD files.
+        """
+        self._remove_option("--display-nsd-messages")
 
     def set_use_different_exit_codes(self):
-        self.add_option("--use-different-exit-codes")
+        """
+        Returns different exit codes according to the higher severity in messages.
+        """
+        self._add_option("--use-different-exit-codes")
 
     def unset_use_different_exit_codes(self):
-        self.remove_option("--use-different-exit-codes")
+        """
+        Don't returns different exit codes according to the higher severity in messages.
+        """
+        self._remove_option("--use-different-exit-codes")
 
     def set_use_filenames_starting_with_dot(self):
-        self.add_option("--use-filenames-starting-with-dot")
+        """
+        Take into account files starting with a dot.
+        """
+        self._add_option("--use-filenames-starting-with-dot")
 
     def unset_use_filenames_starting_with_dot(self):
-        self.remove_option("--use-filenames-starting-with-dot")
+        """
+        Don't take into account files starting with a dot.
+        """
+        self._remove_option("--use-filenames-starting-with-dot")
 
 
 

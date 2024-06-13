@@ -22,10 +22,30 @@ from urllib.error import URLError, HTTPError
 
 class RiseClipseDownload:
 
-    def __init__(self):
-        pass
+    """
+    This class is used to download RiseClipse validator ``jar`` files.
+    """
 
-    def get_latest_version(self, repository):
+    def get_latest_version(self, repository: str) -> list[int]:
+        """
+        Get the latest version of the tool in the given repository of `RiseClipse organisation`_
+        on GitHub.
+        
+        .. _RiseClipse organisation:
+            https://github.com/riseclipse
+        
+        Example:
+            Get the latest version of RiseClipseValidatorSCL tool::
+            
+                download = RiseClipseDownload()
+                download.get_latest_version('risceclipse_validator_scl2003')
+        
+        Args:
+            repository: The repository of `RiseClipse organisation`_ dedicated to the wanted tool.
+                
+        Returns:
+            A list of three integers giving the latest version.
+        """
         url = 'https://github.com/riseclipse/' + repository + '/releases/latest'
         page = None
         try:
@@ -57,7 +77,26 @@ class RiseClipseDownload:
             version[i] = int(version[i])
         return version
 
-    def download_version(self, repository, name, version, output):
+    def download_version(self, repository : str, name: str, version: list[int], output: str) -> None:
+        """
+        Download the ``jar`` of the tool in the given repository of `RiseClipse organisation`_
+        on GitHub, with the given name and version, put it in the file with the given path.
+        
+        .. _RiseClipse organisation:
+            https://github.com/riseclipse
+        
+        Example:
+            Get the latest version of RiseClipseValidatorSCL tool::
+            
+                download = RiseClipseDownload()
+                download.download_version('risceclipse_validator_scl2003', 'RiseClipseValidatorSCL', [1, 2, 7], 'RiseClipseValidatorSCL.jar')
+        
+        Args:
+            repository: The repository of `RiseClipse organisation`_ dedicated to the wanted tool.
+            name: the name of the ``jar`` file without the version number.
+            version: the requested version.
+            output: the path where the ``jar`` will be saved.
+        """
         version = '%d.%d.%d' % (version[0], version[1], version[2])
         url = 'https://github.com/riseclipse/' + repository + '/releases/download/'
         url = url + repository + '-' + version + '/' + name + '-' + version + '.jar'
