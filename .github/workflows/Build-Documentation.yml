@@ -50,22 +50,17 @@ jobs:
         
     - name: Sphinx build
       run: |
-        pwd
-        ls -l
-        ls -l *
         cd ${{ github.event.repository.name }}/fr.centralesupelec.edf.riseclipse.python.launcher/docs
         make html
 
     - name: Copy on riseclipse.github.io
       run: |
-        pwd
         cp -r ${{ github.event.repository.name }}/fr.centralesupelec.edf.riseclipse.python.launcher/docs/_build/html riseclipse-temporary/python-launcher-docs/
 
     - name: Commit and push to GitHub
       run: |
         cd riseclipse-temporary
-        ls -l
-        #git add --all
-        #git commit -m "New version of documentation of python-launcher"
-        #git push
+        git add --all
+        git commit -m "New version of documentation of python-launcher"
+        git push
 
