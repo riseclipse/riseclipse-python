@@ -57,9 +57,14 @@ jobs:
       run: |
         cp -r ${{ github.event.repository.name }}/fr.centralesupelec.edf.riseclipse.python.launcher/docs/_build/html riseclipse-temporary/python-launcher-docs/
 
-    - name: Commit and push to GitHub
+    - name: Configure Git User
       run: |
         cd riseclipse-temporary
+        git config user.email github-actions@github.com
+        git config user.name "GitHub Actions"
+
+    - name: Commit and push to GitHub
+      run: |
         git add --all
         git commit -m "New version of documentation of python-launcher"
         git push
