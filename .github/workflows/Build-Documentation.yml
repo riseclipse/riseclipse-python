@@ -59,12 +59,12 @@ jobs:
 
     - name: Configure Git User
       run: |
-        cd riseclipse-temporary
-        git config user.email github-actions@github.com
-        git config user.name "GitHub Actions"
+        git config --global user.email github-actions@github.com
+        git config --global user.name "GitHub Actions"
 
     - name: Commit and push to GitHub
       run: |
+        cd riseclipse-temporary
         git add --all
         git commit -m "New version of documentation of python-launcher"
         git push
