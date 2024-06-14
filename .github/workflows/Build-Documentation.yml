@@ -51,35 +51,16 @@ jobs:
       run: |
         cd ${{ github.event.repository.name }}/fr.centralesupelec.edf.riseclipse.python.launcher/docs
         make html
+        touch _build/html/.nojekyll
 
-    - name: Copy on riseclipse.github.io
-      run: |
-        cp -r ${{ github.event.repository.name }}/fr.centralesupelec.edf.riseclipse.python.launcher/docs/_build/html riseclipse-temporary/python-launcher-docs/
-
-    - name: Configure Git User
-      run: |
-        git config --global user.email github-actions@github.com
-        git config --global user.name "GitHub Actions"
-
-    - name: Create and switch to branch new_documentation
-      run: |
-        cd riseclipse-temporary
-        git branch new_documentation
-        git switch new_documentation
-        git push --set-upstream origin new_documentation
-
-    - name: Commit new documentation
-      run: |
-        cd riseclipse-temporary
-        git add --all
-        git commit -m "New version of documentation of python-launcher"
-
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
-      with:
-        base: master
-        branch: new_documentation
-        labels: automated pr
-        title: '[action] New documentation built'
-        path: riseclipse-temporary
-
+    - name: Deploy on riseclipse.github.io
+      - uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: '_build/html'
+          destination-github-username: 'riseclipse'
+          destination-repository-name: 'riseclipse-temporary'
+          user-email: riseclipse@gmail.com
+          target-branch: master
+          target-directory: python-launcher-docs
