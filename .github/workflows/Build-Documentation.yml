@@ -17,7 +17,7 @@
 # **      https://riseclipse.github.io
 # *************************************************************************
 
-name: Build launcher documentation, deploy it on riseclipse.github.io
+name: Build launcher documentation, deploy it on branch gh-pages
 
 on: workflow_dispatch
 
@@ -51,16 +51,12 @@ jobs:
       run: |
         cd ${{ github.event.repository.name }}/fr.centralesupelec.edf.riseclipse.python.launcher/docs
         make html
-        touch _build/html/.nojekyll
 
-    - name: Deploy on riseclipse.github.io
-      uses: cpina/github-action-push-to-another-repository@main
-      env:
-        SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+    - name: Deploy on branch gh-pages
+      uses: peaceiris/actions-gh-pages@v4
       with:
-        source-directory: '${{ github.event.repository.name }}/fr.centralesupelec.edf.riseclipse.python.launcher/docs/_build/html'
-        destination-github-username: 'riseclipse'
-        destination-repository-name: 'riseclipse.github.io'
-        user-email: riseclipse@gmail.com
-        target-branch: master
-        target-directory: python-launcher-docs
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: '${{ github.event.repository.name }}/fr.centralesupelec.edf.riseclipse.python.launcher/docs/_build/html'
+        destination_dir: python-launcher-docs
+        force_orphan: true
+        commit_message: 'Update riseclipse-python-launcher-docs'
