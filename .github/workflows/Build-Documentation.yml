@@ -54,13 +54,13 @@ jobs:
         touch _build/html/.nojekyll
 
     - name: Deploy on riseclipse.github.io
-      - uses: cpina/github-action-push-to-another-repository@main
-        env:
-          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
-        with:
-          source-directory: '_build/html'
-          destination-github-username: 'riseclipse'
-          destination-repository-name: 'riseclipse-temporary'
-          user-email: riseclipse@gmail.com
-          target-branch: master
-          target-directory: python-launcher-docs
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+      with:
+        source-directory: '_build/html'
+        destination-github-username: 'riseclipse'
+        destination-repository-name: 'riseclipse-temporary'
+        user-email: riseclipse@gmail.com
+        target-branch: master
+        target-directory: python-launcher-docs
