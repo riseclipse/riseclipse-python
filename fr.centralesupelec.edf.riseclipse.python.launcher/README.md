@@ -47,5 +47,5 @@ Your version is the latest one
 Another way is to use the API to specify the path of the validator jar (```set_jar_file()```).
 
 
-The API documentation will be available soon.
+The API documentation is available [here](https://riseclipse.github.io/riseclipse-python/python-launcher-docs/index.html).
 
