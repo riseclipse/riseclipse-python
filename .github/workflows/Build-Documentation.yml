@@ -22,8 +22,11 @@ name: Build launcher documentation, deploy it on riseclipse.github.io
 on: workflow_dispatch
 
 jobs:
-  docs:
+  build-python-launcher-docs:
     runs-on: ubuntu-22.04
+
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout ${{ github.event.repository.name }}
