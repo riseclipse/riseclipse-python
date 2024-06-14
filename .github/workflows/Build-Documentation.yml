@@ -67,5 +67,8 @@ jobs:
         cd riseclipse-temporary
         git add --all
         git commit -m "New version of documentation of python-launcher"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/riseclipse/riseclipse-temporary
         git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
