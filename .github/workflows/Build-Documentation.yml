@@ -31,11 +31,11 @@ jobs:
       with:
         path: ${{ github.event.repository.name }}
 
-    - name: Checkout riseclipse-temporary
+    - name: Checkout riseclipse.github.io
       uses: actions/checkout@v4
       with:
-        repository: riseclipse/riseclipse-temporary
-        path: riseclipse-temporary
+        repository: riseclipse/riseclipse.github.io
+        path: riseclipse.github.io
         ref: master
 
     - name: Install Python
@@ -60,7 +60,7 @@ jobs:
       with:
         source-directory: '${{ github.event.repository.name }}/fr.centralesupelec.edf.riseclipse.python.launcher/docs/_build/html'
         destination-github-username: 'riseclipse'
-        destination-repository-name: 'riseclipse-temporary'
+        destination-repository-name: 'riseclipse.github.io'
         user-email: riseclipse@gmail.com
         target-branch: master
         target-directory: python-launcher-docs
