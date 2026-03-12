@@ -1,0 +1,6 @@
+colorama==0.4.6
+cutie==0.3.2
+elementpath==4.2.1
+networkx==3.2.1
+readchar==4.0.5
+xmlschema==3.0.1
